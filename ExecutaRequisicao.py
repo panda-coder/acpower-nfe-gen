@@ -1,7 +1,11 @@
 #!/usr/bin/python
 
 import ConfigParser, os
-import requests
+try:
+	import requests
+except ImportError, e:
+	print "Requests nao encontrado. Pode instalar via apt-get install python-requests"
+	exit() 
 
 class ExecutaRequisicao:
 	def __init__(self):
