@@ -2,14 +2,32 @@
 import wx
 from popup import Popup
 from configgen import ConfigGen
-
+from genthread import genThread
+from executarequisicao import ExecutaRequisicao
 
 class MainWindow(wx.Frame):
 	def __init__(self, parent, title):
 		wx.Frame.__init__(self, parent, title=title, size=(500,500))
 		self.InitUI()
+		self.InitProcess()
+		self.InitThreads()
 		self.Centre()
 		self.InitEvents()
+
+	def InitProcess(self):
+		self.execReq = ExecutaRequisicao()
+
+	def InitThreads(self):
+		self.InitThreadSefaz()
+		self.InitThreadInterno()
+
+	def InitThreadSefaz(self):
+		self.ThreadSefaz = genThread()
+		self.ThreadSefaz.setFunction(self.execReq.ExecutaSefaz)
+
+	def InitThreadInterno(self):
+		self.ThreadInterno = genThread()
+		self.ThreadInterno.setFunction(self.execReq.ExecutaInterno)
 
 	def InitEvents(self):
 		self.btnEntrada.Bind(wx.EVT_BUTTON, self.btnEntradaClick)
@@ -17,6 +35,9 @@ class MainWindow(wx.Frame):
 
 		self.btnSefaz.Bind(wx.EVT_BUTTON, self.btnSefazClick)
 		self.btnSefazDes.Bind(wx.EVT_BUTTON, self.btnSefazDesClick)
+
+		self.btnImpressao.Bind(wx.EVT_BUTTON, self.btnImpressaoClick)
+		self.btnImpressaoDes.Bind(wx.EVT_BUTTON, self.btnImpressaoDesClick)
 
 		self.Bind(wx.EVT_MENU, self.OnExit, self.menuExit)
                 self.Bind(wx.EVT_MENU, self.OnAbout, self.menuSobre)
@@ -113,9 +134,24 @@ class MainWindow(wx.Frame):
 	def btnSefazClick(self, event):
 		self.btnSefaz.Disable()
 		self.btnSefazDes.Enable()
+		self.ThreadSefaz.start()
+
 	def btnSefazDesClick(self, event):
 		self.btnSefazDes.Disable()
 		self.btnSefaz.Enable()
+		self.ThreadSefaz.stop()
+		self.InitThreadSefaz()
+
+	def btnImpressaoClick(self, event):
+		self.btnImpressaoDes.Enable()
+		self.btnImpressao.Disable()
+		self.ThreadInterno.start()
+
+	def btnImpressaoDesClick(self, event):
+		self.btnImpressao.Enable()
+		self.btnImpressaoDes.Disable()
+		self.ThreadInterno.stop()
+		self.InitThreadInterno()
 
 app = wx.App(True)
 frame = MainWindow(None, "Gerenciador NFE Acpower")
