@@ -20,6 +20,7 @@ class MainWindow(wx.Frame):
 	def InitThreads(self):
 		self.InitThreadSefaz()
 		self.InitThreadInterno()
+		self.InitThreadEntrada()
 
 	def InitThreadSefaz(self):
 		self.ThreadSefaz = genThread()
@@ -28,6 +29,10 @@ class MainWindow(wx.Frame):
 	def InitThreadInterno(self):
 		self.ThreadInterno = genThread()
 		self.ThreadInterno.setFunction(self.execReq.ExecutaInterno)
+		
+	def InitThreadEntrada(self):
+		self.ThreadEntrada = genThread()
+		self.ThreadEntrada.setFunction(self.execReq.ExecutaEntrada)
 
 	def InitEvents(self):
 		self.btnEntrada.Bind(wx.EVT_BUTTON, self.btnEntradaClick)
@@ -127,10 +132,14 @@ class MainWindow(wx.Frame):
 	def btnEntradaClick(self, event):
 		self.btnEntradaDes.Enable()
 		self.btnEntrada.Disable()
+		self.ThreadEntrada.start()
 
 	def btnEntradaDesClick(self, event):
 		self.btnEntrada.Enable()
 		self.btnEntradaDes.Disable()
+		self.ThreadEntrada.stop()
+		self.InitThreadEntrada()
+		
 	def btnSefazClick(self, event):
 		self.btnSefaz.Disable()
 		self.btnSefazDes.Enable()
@@ -153,7 +162,7 @@ class MainWindow(wx.Frame):
 		self.ThreadInterno.stop()
 		self.InitThreadInterno()
 
-app = wx.App(True)
+app = wx.App(redirect=False)
 frame = MainWindow(None, "Gerenciador NFE Acpower")
 #pop.Show(True)
 app.MainLoop()
