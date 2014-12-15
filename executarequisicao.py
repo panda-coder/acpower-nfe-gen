@@ -24,7 +24,7 @@ class ExecutaRequisicao:
 	def ExecutaInterno(self):
 		print "Executando interno"
 	def ExecutaEntrada(self):
-		#print requests.get(self.urlEntrada).text
+		print requests.get(self.urlEntrada).text
 		print "Executrando entrada"
 	def getSefaz(self):
 		return self.urlServiceSefaz
