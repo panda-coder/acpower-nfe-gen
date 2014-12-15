@@ -26,4 +26,22 @@ class ExecutaRequisicao:
 	def ExecutaEntrada(self):
 		#print requests.get(self.urlEntrada).text
 		print "Executrando entrada"
+	def getSefaz(self):
+		return self.urlServiceSefaz
+	def getEntrada(self):
+		return self.urlEntrada
+	def getInternal(self):
+		return self.urlInternal
+	def SaveNewConfigs(self, internal, sefaz, entrada):
+		config = ConfigParser.RawConfigParser()
+		config.add_section('EntradaSefaz')
+		config.add_section('ServiceSefaz')
+		config.add_section('ServiceInternal')
+		config.set('EntradaSefaz', 'urlprocesso', entrada)
+		config.set('ServiceSefaz', 'urlprocesso', sefaz)
+		config.set('ServiceInternal', 'urlprocesso', internal)
+		with open('defaults.cfg', 'wb') as configfile:
+			config.write(configfile)
+		
+
 

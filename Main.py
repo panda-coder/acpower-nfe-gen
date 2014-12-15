@@ -7,7 +7,7 @@ from executarequisicao import ExecutaRequisicao
 
 class MainWindow(wx.Frame):
 	def __init__(self, parent, title):
-		wx.Frame.__init__(self, parent, title=title, size=(500,500))
+		wx.Frame.__init__(self, parent, title=title, size=(500,300))
 		self.InitUI()
 		self.InitProcess()
 		self.InitThreads()
