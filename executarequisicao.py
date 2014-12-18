@@ -20,9 +20,11 @@ class ExecutaRequisicao:
 		print self.urlEntrada
 
 	def ExecutaSefaz(self):
-		print "Executando sefaz" 
+		print "Executando sefaz"
+		print requests.get(self.urlServicoSefaz).text
 	def ExecutaInterno(self):
 		print "Executando interno"
+		print requests.get(self.urlInternal).text
 	def ExecutaEntrada(self):
 		print requests.get(self.urlEntrada).text
 		print "Executrando entrada"
